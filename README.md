@@ -2,17 +2,14 @@
 
 Atomic authority package for `math/cos`.
 
-- imports: `#{:cos}`
-- effects: `#{:pure-compute}`
-- default policy: `:autonomous`
+- provider status: **reference-implemented**
 - semantic definition CID: `bafyreicar6jammab2k3z3fxxbkbwf6smur7fd6axezp2gu5hfxmqszswxe`
-- hash contract CID: `bafkreiflhj3fslsbh7okdas2fzlhmogai64x6p3lkla6gtr7berbp7ftvi`
-- provider status: `contract-only`
+- artifact: `artifacts/provider.core.wasm` (sha256 `3e595f02c73028988f422c3f1c8b6ff1359eb794f5aa732fdd759484c7a25a48`)
+- JVM reference: `kotoba.capability.math.cos.provider`
+- host ABI: module `kotoba`, field `cos`, f32→f32
 
-The repository name is a discovery alias. The semantic definition CID
-is the immutable import identity. Importing it does not grant runtime
-authority: Tamaki must request it explicitly and Kototama must admit
-the sealed envelope.
+Definition CID is the import identity. `:signature :reference-unsigned`
+is reference packaging; production signing is follow-up.
 
 ```sh
 clojure -M:test

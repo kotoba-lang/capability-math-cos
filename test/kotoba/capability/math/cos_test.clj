@@ -1,10 +1,30 @@
 (ns kotoba.capability.math.cos-test
   (:require [clojure.test :refer [deftest is]]
+            [clojure.java.io :as io]
             [kotoba.capability.math.cos :as capability]
+            [kotoba.capability.math.cos.provider :as provider]
             [kotoba.core.capability-repository :as repository]
-            [kotoba.core.contracts :as contracts]))
+            [kotoba.core.contracts :as contracts])
+  (:import [java.security MessageDigest] [java.lang Math]))
 
-(deftest manifest-conforms
-  (is (= [] (repository/validate-manifest
-             (contracts/capability-contract)
-             capability/manifest))))
+(defn- sha256-file [f]
+  (let [md (MessageDigest/getInstance "SHA-256")
+        bytes (.digest md (.readAllBytes (io/input-stream f)))]
+    (apply str (map #(format "%02x" (bit-and % 0xff)) bytes))))
+
+(deftest manifest-conforms-as-reference-implemented
+  (is (= :reference-implemented (:capability/provider-status capability/manifest)))
+  (is (= [] (repository/validate-manifest (contracts/capability-contract) capability/manifest))))
+
+(deftest artifact-sha256-matches-bytes
+  (let [path (io/file "artifacts/provider.core.wasm")
+        declared (get-in capability/manifest [:capability/artifact :sha256])]
+    (is (.isFile path))
+    (is (= declared (sha256-file path)))))
+
+(deftest jvm-reference-provider-matches-java-math
+  (let [export (provider/host-export) f (:fn export)]
+    (is (= "kotoba" (:module export)))
+    (is (= "cos" (:field export)))
+    (is (= (float (Math/cos 0.0)) (f 0.0)))
+    (is (< (Math/abs (- (double (f 0.5)) (Math/cos 0.5))) 1e-5))))
