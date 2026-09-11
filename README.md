@@ -12,5 +12,5 @@ Definition CID is the import identity. `:signature :reference-unsigned`
 is reference packaging; production signing is follow-up.
 
 ```sh
-clojure -M:test
+kbb -M:test
 ```
