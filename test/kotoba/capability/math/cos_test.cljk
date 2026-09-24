@@ -1,5 +1,5 @@
 (ns kotoba.capability.math.cos-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [clojure.java.io :as io]
             [kotoba.capability.math.cos :as capability]
             [kotoba.capability.math.cos.provider :as provider]
