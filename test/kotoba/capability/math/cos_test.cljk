@@ -1,6 +1,6 @@
 (ns kotoba.capability.math.cos-test
   (:require [kotoba.test :refer [deftest is]]
-            [clojure.java.io :as io]
+            [kotoba.io :as io]
             [kotoba.capability.math.cos :as capability]
             [kotoba.capability.math.cos.provider :as provider]
             [kotoba.core.capability-repository :as repository]
@@ -19,7 +19,7 @@
 (deftest artifact-sha256-matches-bytes
   (let [path (io/file "artifacts/provider.core.wasm")
         declared (get-in capability/manifest [:capability/artifact :sha256])]
-    (is (.isFile path))
+    (is (io/file? path))
     (is (= declared (sha256-file path)))))
 
 (deftest jvm-reference-provider-matches-java-math
